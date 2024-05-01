@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Grade and Lesson</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">Add Grade and Lesson</h2>
+      <form id="gradeLessonForm">
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <select class="form-control" id="subject">
+              <option value="math">Math</option>
+              <option value="science">Science</option>
+              <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="subject">Grade:</label>
+            <select class="form-control" id="grade">
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="lesson">Lesson:</label>
+          <input type="text" class="form-control" id="lesson" placeholder="Enter lesson">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitButton">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Firebase JavaScript SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+<script src="src/firebase_config.js"></script>
+<script src="src/script.js"></script>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

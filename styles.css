@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+  
+  #addForm, #reactionSection {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"], button {
+    margin-right: 10px;
+  }
+
+  .content-box {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: aqua;
+  }
+
+  .reaction-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .reaction {
+    display: flex;
+    align-self: center;
+    
+  }
+  .reaction-group {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+}
+    
+  
+  .reaction-group>img{
+    padding: 25px;
+    transition: transform 0.3s ease;
+  }
+  .reaction-group>img:hover {
+    transform: scale(1.2);
+  }
+
+  

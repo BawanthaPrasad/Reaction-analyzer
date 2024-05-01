@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reactions List</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Reactions List</h1>
+    <!-- Search bar -->
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search lessons...">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Subject</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Lesson</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody id="reactions-list">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="percentageModal" tabindex="-1" aria-labelledby="percentageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="percentageModalLabel">Reaction Percentages</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="progress mb-3">
+            <div id="excellentProgress" class="progress-bar bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="progress mb-3">
+            <div id="okProgress" class="progress-bar bg-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="progress mb-3">
+            <div id="poorProgress" class="progress-bar bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+  <script src="src/firebase_config.js"></script>
+  <script>
+    // Initialize Firebase
+    const db = firebase.firestore();
+
+    // Function to calculate percentage
+    function calculatePercentage(total, value) {
+      return (value / total) * 100;
+    }
+
+    // Function to display the percentage bar in a modal
+    function showPercentagePopup(excellents, oks, poors) {
+      // Check for NaN values and convert them to 0
+      excellents = isNaN(excellents) ? 0 : excellents;
+      oks = isNaN(oks) ? 0 : oks;
+      poors = isNaN(poors) ? 0 : poors;
+
+      const total = excellents + oks + poors;
+      const excellentPercentage = calculatePercentage(total, excellents);
+      const okPercentage = calculatePercentage(total, oks);
+      const poorPercentage = calculatePercentage(total, poors);
+
+      // Set progress bar widths
+      document.getElementById('excellentProgress').style.width = `${excellentPercentage}%`;
+      document.getElementById('excellentProgress').innerText = `${excellentPercentage.toFixed(2)}%`;
+      document.getElementById('okProgress').style.width = `${okPercentage}%`;
+      document.getElementById('okProgress').innerText = `${okPercentage.toFixed(2)}%`;
+      document.getElementById('poorProgress').style.width = `${poorPercentage}%`;
+      document.getElementById('poorProgress').innerText = `${poorPercentage.toFixed(2)}%`;
+
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('percentageModal'));
+      modal.show();
+    }
+
+    
+    // Function to fetch reactions data from Firestore based on lesson_id and display it
+async function displayReactions() {
+  const reactionsList = document.getElementById('reactions-list');
+  reactionsList.innerHTML = ''; // Clear previous data
+
+  try {
+    const lessonsSnapshot = await db.collection('lessons').orderBy('timeStamp', 'desc').get();
+    const lessonsData = lessonsSnapshot.docs.map(doc => doc.data());
+
+    // Iterate through each lesson data
+    for (const lessonData of lessonsData) {
+      // Fetch reactions data for the current lesson_id
+      const reactionsSnapshot = await db.collection('reactions').where('lesson_id', '==', lessonData.lesson_id).get();
+      const reactionsData = reactionsSnapshot.docs.map(doc => doc.data())[0]; // Assuming only one reaction per lesson
+
+      // Create a table row for the current lesson and reactions data
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${lessonData.subject}</td>
+        <td>${lessonData.grade}</td>
+        <td>${lessonData.lesson}</td>
+        <td>${lessonData.timeStamp}</td>
+        <td><button class="btn btn-primary" onclick="showPercentagePopup(${reactionsData.excelents || 0}, ${reactionsData.oks || 0}, ${reactionsData.poors || 0})">Show Percentages</button></td>
+      `;
+      reactionsList.appendChild(row);
+    }
+  } catch (error) {
+    console.error('Error fetching reactions:', error);
+  }
+}
+
+// Call the function to display reactions when the page loads
+displayReactions();
+
+// Function to filter lessons based on search input
+document.getElementById('searchInput').addEventListener('input', function() {
+  const searchText = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#reactions-list tr');
+  rows.forEach(row => {
+    const lessonName = row.querySelector('td:nth-child(3)').innerText.toLowerCase();
+    if (lessonName.includes(searchText)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

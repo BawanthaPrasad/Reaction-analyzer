@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reactions</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css"> <!-- You can define your custom styles here -->
+</head>
+<body>
+  <div class="container">
+    <h2>Choose your reaction:</h2>
+    <div class="reaction-container row">
+      <div class="reaction-group col-md-4 col-sm-12">
+        <img src="src/img/excellent.png" alt="Excellent" id="excellent_image" onclick="react('excellent')">
+        <button class="btn btn-outline-success reaction " id="excellent" onclick="react('excellent')">
+            <span class="glyphicon glyphicon-thumbs-up"></span> Excellent
+        </button>
+      </div>
+      <div class="reaction-group col-md-4 col-sm-12">
+        <img src="src/img/ok.png" alt="Ok" id="ok_image" onclick="react('ok')">
+        <button class="btn btn-outline-warning reaction" id="ok" onclick="react('ok')">
+            <span class="glyphicon glyphicon-ok"></span> Ok
+        </button>
+      </div>
+      <div class="reaction-group col-md-4 col-sm-12">
+        <img src="src/img/poor.png" alt="poor" id="poor_image" onclick="react('poor')">
+        <button class="btn btn-outline-danger reaction" id="poor" onclick="react('poor')">
+            <span class="glyphicon glyphicon-thumbs-down"></span> Poor
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+  <script src="src/firebase_config.js"></script>
+  <script src="src/script.js"></script> <!-- You can define your JavaScript logic here -->
+</body>
+</html>
