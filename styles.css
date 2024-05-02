@@ -40,12 +40,11 @@ body {
   text-align: center;
   
 }
-    
-  
   .reaction-group>img{
     padding: 25px;
     transition: transform 0.3s ease;
   }
+
   .reaction-group>img:hover {
     transform: scale(1.2);
   }
