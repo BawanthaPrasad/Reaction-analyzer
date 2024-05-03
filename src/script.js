@@ -75,6 +75,8 @@ submitButton.addEventListener('click', async function(event) {
 
 // Function to handle reaction click event
 function react(reactionType) {
+  
+  playAnimation(reactionType);
   // Get the lesson ID
   var lessonId = localStorage.getItem('pass_lesson');
   console.log('Lesson ID:', lessonId);
@@ -122,4 +124,13 @@ function react(reactionType) {
     .catch(error => {
       console.error('Error updating reaction:', error);
     });
+}
+function playAnimation(imageId) {
+  const image = document.getElementById(imageId);
+  image.classList.add('img-click-animation');
+  
+  // Remove animation class after animation completes
+  setTimeout(() => {
+    image.classList.remove('img-click-animation');
+  }, 300);
 }
