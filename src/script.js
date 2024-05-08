@@ -35,8 +35,8 @@ submitButton.addEventListener('click', async function(event) {
     while (!isUnique) {
       lessonID = generateLessonID();
       isUnique = await isLessonIDUnique(lessonID);
-      localStorage.setItem('pass_lesson', lessonID); // Corrected line
-      console.log(localStorage.getItem('pass_lesson')); // Testing if the value is set correctly
+      localStorage.setItem('pass_lesson', lessonID); 
+      console.log(localStorage.getItem('pass_lesson')); 
     }
     
     // Add data to Firestore
@@ -81,6 +81,8 @@ function react(reactionType) {
   var lessonId = localStorage.getItem('pass_lesson');
   console.log('Lesson ID:', lessonId);
 
+  var alertd = document.getElementById("alertDiv");
+
   // Reference to the reactions collection
   const reactionsRef = db.collection("reactions");
 
@@ -119,11 +121,14 @@ function react(reactionType) {
     })
     .then(() => {
       console.log('Reaction updated successfully.');
-      // You can perform any additional actions here if needed
+      alert('Reaction updated successfully.');
     })
     .catch(error => {
       console.error('Error updating reaction:', error);
     });
+
+    
+
 }
 function playAnimation(imageId) {
   const image = document.getElementById(imageId);
