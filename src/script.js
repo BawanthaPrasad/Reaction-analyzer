@@ -121,7 +121,7 @@ function react(reactionType) {
     })
     .then(() => {
       console.log('Reaction updated successfully.');
-      alert('Reaction updated successfully.');
+      showPopupMessage('Reaction updated successfully.');
     })
     .catch(error => {
       console.error('Error updating reaction:', error);
@@ -138,4 +138,13 @@ function playAnimation(imageId) {
   setTimeout(() => {
     image.classList.remove('img-click-animation');
   }, 300);
+}
+
+function showPopupMessage(message) {
+  var popup = document.getElementById('popupMessage');
+  popup.innerText = message;
+  popup.style.display = 'block';
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
 }
