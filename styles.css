@@ -2,6 +2,9 @@ body {
   font-family: Arial, sans-serif;
   padding-top: 60px;
 
+  background: url('src/img/background.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 h1,
@@ -21,14 +24,8 @@ button {
   margin-right: 10px;
 }
 
-.content-box {
-  border: 2px solid #ccc;
-  scale: 200%;
-  border-radius: 10px;
-  padding: 50px;
-  margin-top: 100px;
-  background-color: lightgray;
-
+.navbar{
+  background-color: darkblue;
 }
 
 .reaction-container {
@@ -98,4 +95,11 @@ button {
   color: white;
   padding: 10px;
   border-radius: 5px;
+}
+
+.container{
+  background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
+  margin: 50px;
+  padding :50px;
+  border-radius: 10px;
 }
