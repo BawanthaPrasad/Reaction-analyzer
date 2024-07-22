@@ -4,7 +4,8 @@ body {
 
   background: url('src/img/background.png') no-repeat center center fixed;
   background-size: cover;
-  background-color: rgba(255, 255, 255, 0.7);
+  padding-top: 50px;
+  
 }
 
 h1,
@@ -26,6 +27,7 @@ button {
 
 .navbar{
   background-color: darkblue;
+
 }
 
 .reaction-container {
@@ -98,8 +100,9 @@ button {
 }
 
 .container{
-  background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
-  margin: 50px;
+  background-color: rgba(255, 255, 255, 0.9); /* White with 50% opacity */
+  margin-block-start: 150px;
   padding :50px;
   border-radius: 10px;
+  
 }
