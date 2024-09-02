@@ -1,8 +1,6 @@
 // Reference to Firestore database
 const db = firebase.firestore();
 
-
-
 // Function to generate a custom lesson ID
 function generateLessonID() {
   // Generate a random ID
@@ -24,9 +22,9 @@ submitButton.addEventListener('click', async function(event) {
   const lesson = document.getElementById('lesson').value;
   const grade = document.getElementById('grade').value;
   var date = new Date();
-  var current_date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate();
-  var current_time = date.getHours()+":"+date.getMinutes()+":"+ date.getSeconds();
-  var date_time = current_date+" "+current_time;
+  var current_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  var current_time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  var date_time = current_date + " " + current_time;
   console.log(date_time);
   if (subject && lesson && grade) {
     let lessonID;
@@ -35,26 +33,26 @@ submitButton.addEventListener('click', async function(event) {
     while (!isUnique) {
       lessonID = generateLessonID();
       isUnique = await isLessonIDUnique(lessonID);
-      localStorage.setItem('pass_lesson', lessonID); 
-      console.log(localStorage.getItem('pass_lesson')); 
+      localStorage.setItem('pass_lesson', lessonID);
+      console.log(localStorage.getItem('pass_lesson'));
     }
-    
+
     // Add data to Firestore
     db.collection("lessons").add({
       lesson_id: lessonID,
       subject: subject,
       lesson: lesson,
       grade: grade,
-      timeStamp : date_time
-    })
+      timeStamp: date_time
+    });
+
     // Add data to Firestore
     db.collection("reactions").add({
       lesson_id: lessonID,
-      excelents:0,
-      oks:0,
-      poors:0
+      excelents: 0,
+      oks: 0,
+      poors: 0
     })
-
     .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
       alert("Grade and Lesson added successfully!");
@@ -72,10 +70,8 @@ submitButton.addEventListener('click', async function(event) {
   }
 });
 
-
 // Function to handle reaction click event
 function react(reactionType) {
-  
   playAnimation(reactionType);
   // Get the lesson ID
   var lessonId = localStorage.getItem('pass_lesson');
@@ -122,14 +118,13 @@ function react(reactionType) {
     .then(() => {
       console.log('Reaction updated successfully.');
       showPopupMessage('Reaction updated successfully.');
+      startTimer(); // Start the timer after updating the reaction
     })
     .catch(error => {
       console.error('Error updating reaction:', error);
     });
-
-    
-
 }
+
 function playAnimation(imageId) {
   const image = document.getElementById(imageId);
   image.classList.add('img-click-animation');
@@ -147,4 +142,25 @@ function showPopupMessage(message) {
   setTimeout(() => {
     popup.style.display = 'none';
   }, 3000);
+}
+
+// Timer function
+function startTimer() {
+  let timer = 10; // 10 seconds timer
+  const timerDisplay = document.getElementById('timerDisplay');
+  const timerCount = document.getElementById('timerCount');
+
+  // Display the timer
+  timerDisplay.style.display = 'block';
+  timerCount.innerText = timer;
+
+  const interval = setInterval(() => {
+    timer--;
+    timerCount.innerText = timer;
+
+    if (timer <= 0) {
+      clearInterval(interval);
+      timerDisplay.style.display = 'none';
+    }
+  }, 1000);
 }

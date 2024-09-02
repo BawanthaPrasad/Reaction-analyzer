@@ -9,7 +9,7 @@
 </head>
 <body>
   <!-- Image and text -->
-<nav class="navbar fixed-top navbar-dark">
+<nav class="navbar fixed-top navbar-light bg-light">
   <a class="navbar-brand" href="index.html">
     <img src="src/img/sisumaga.png" width="30" height="30" class="d-inline-block align-top" alt="">
     
@@ -19,11 +19,13 @@
 <div id="alertDiv" class="alert alert-danger mt-3" style="display:none;">
   This is a Bootstrap alert.
 </div>
+<div class="popupMessage" id="popupMessage" >
+  Reaction updated successfully.
+</div>
+
   <div class="container mt-5">
-    <div class="popupMessage" id="popupMessage" >
-      Reaction updated successfully.
-    </div>
     <h2>Choose your reaction:</h2>
+    
     <div class="reaction-container row">
       <div class="reaction-group col-md-4 col-sm-12">
         <img src="src/img/excellent.png" alt="Excellent" id="excellent" onclick="react('excellent')">
@@ -42,6 +44,9 @@
         <button class="btn btn-outline-danger reaction" id="poor" onclick="react('poor')">
             <span class="glyphicon glyphicon-thumbs-down"></span> Poor
         </button>
+      </div>
+      <div id="timerDisplay" class="floating-timer" style="display: none;">
+        Time remaining to add another reaction: <span id="timerCount">3</span> seconds
       </div>
     </div>
   </div>

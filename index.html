@@ -7,32 +7,43 @@
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  
 </head>
 <body>
-  <!-- Image and text -->
-<nav class="navbar fixed-top navbar-dark">
-  <a class="navbar-brand" href="index.html">
-    <img src="src/img/sisumaga.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    
-  </a>
-</nav>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <img src="src/img/sisumaga.png" alt="Loading...">
+  </div>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 content-box">
-      <h2 class="text-center mb-4">Lesson Analyzer</h2>
-      <div class="text-center mb-4">
-        <a href="Addlesson.html"><button id="addLessonBtn" class="btn btn-primary mr-3">Add Today Lessons</button></a>
-        <a href="AnalyzeList.html"><button id="analyzeBtn" class="btn btn-success">Analyze</button></a>
+  <!-- Image and text -->
+  <nav class="navbar fixed-top navbar-dark">
+    <a class="navbar-brand" href="index.html">
+      <img src="src/img/sisumaga.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 content-box">
+        <h2 class="text-center mb-4">Lesson Analyzer</h2>
+        <div class="text-center mb-4">
+          <a href="Addlesson.html"><button id="addLessonBtn" class="btn btn-primary mr-3">Add Today Lessons</button></a>
+          <a href="AnalyzeList.html"><button id="analyzeBtn" class="btn btn-success">Analyze</button></a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Bootstrap JS (optional) -->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    // Hide the loading screen after the page is fully loaded
+    window.addEventListener('load', function() {
+      document.getElementById('loading').style.display = 'none';
+    });
+  </script>
 </body>
 </html>
