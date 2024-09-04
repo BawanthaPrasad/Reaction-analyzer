@@ -5,7 +5,6 @@ let timerActive = false;
 
 // Function to generate a custom lesson ID
 function generateLessonID() {
-  // Generate a random ID
   const lessonID = Math.random().toString(36).substr(2, 9); // Example: "5h78dsf9"
   return lessonID;
 }
@@ -20,53 +19,65 @@ async function isLessonIDUnique(lessonID) {
 const submitButton = document.getElementById('submitButton');
 submitButton.addEventListener('click', async function(event) {
   event.preventDefault();
+  
+  // Check if a timer is active
+  if (timerActive) {
+    console.log('Cannot add lesson while the timer is active.');
+    return; // Exit if the timer is active
+  }
+
   const subject = document.getElementById('subject').value;
   const lesson = document.getElementById('lesson').value;
   const grade = document.getElementById('grade').value;
-  var date = new Date();
-  var current_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-  var current_time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-  var date_time = current_date + " " + current_time;
+  const date = new Date();
+  const current_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  const current_time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  const date_time = current_date + " " + current_time;
   console.log(date_time);
+  
   if (subject && lesson && grade) {
     let lessonID;
     let isUnique = false;
+    
     // Generate a unique lesson ID
     while (!isUnique) {
       lessonID = generateLessonID();
       isUnique = await isLessonIDUnique(lessonID);
-      localStorage.setItem('pass_lesson', lessonID);
-      console.log(localStorage.getItem('pass_lesson'));
     }
 
-    // Add data to Firestore
-    db.collection("lessons").add({
-      lesson_id: lessonID,
-      subject: subject,
-      lesson: lesson,
-      grade: grade,
-      timeStamp: date_time
-    });
+    localStorage.setItem('pass_lesson', lessonID);
+    console.log(localStorage.getItem('pass_lesson'));
 
-    // Add data to Firestore
-    db.collection("reactions").add({
-      lesson_id: lessonID,
-      excelents: 0,
-      oks: 0,
-      poors: 0
-    })
-    .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
+    try {
+      // Add data to Firestore
+      await db.collection("lessons").add({
+        lesson_id: lessonID,
+        subject: subject,
+        lesson: lesson,
+        grade: grade,
+        timeStamp: date_time
+      });
+
+      await db.collection("reactions").add({
+        lesson_id: lessonID,
+        excelents: 0,
+        oks: 0,
+        poors: 0
+      });
+
+      console.log("Document written successfully.");
       alert("Grade and Lesson added successfully!");
-      // Clear form fields after submission
-      window.location.href = "react.html";
+
+      // Clear form fields and redirect after successful submission
       document.getElementById('lesson').value = '';
       document.getElementById('grade').value = '';
-    })
-    .catch(function(error) {
+      window.location.href = "react.html";
+
+    } catch (error) {
       console.error("Error adding document: ", error);
       alert("Error: Grade and Lesson could not be added!");
-    });
+    }
+
   } else {
     alert("Please fill out all fields.");
   }
@@ -80,26 +91,20 @@ function react(reactionType) {
   }
 
   playAnimation(reactionType);
-  // Get the lesson ID
-  var lessonId = localStorage.getItem('pass_lesson');
+  const lessonId = localStorage.getItem('pass_lesson');
   console.log('Lesson ID:', lessonId);
 
-  var alertd = document.getElementById("alertDiv");
-
-  // Reference to the reactions collection
   const reactionsRef = db.collection("reactions");
 
   // Update the reaction count based on the reaction type
   reactionsRef.where("lesson_id", "==", lessonId).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
-        // Get the existing values
         let data = doc.data();
         let excellents = data.excelents || 0;
         let oks = data.oks || 0;
         let poors = data.poors || 0;
 
-        // Update the count based on the reaction type
         switch (reactionType) {
           case "excellent":
             excellents++;
@@ -114,7 +119,6 @@ function react(reactionType) {
             break;
         }
 
-        // Update the document with new counts
         return reactionsRef.doc(doc.id).update({
           excelents: excellents,
           oks: oks,
@@ -140,7 +144,6 @@ function playAnimation(imageId) {
   const image = document.getElementById(imageId);
   image.classList.add('img-click-animation');
   
-  // Remove animation class after animation completes
   setTimeout(() => {
     image.classList.remove('img-click-animation');
   }, 300);
@@ -161,7 +164,6 @@ function startTimer() {
   const timerDisplay = document.getElementById('timerDisplay');
   const timerCount = document.getElementById('timerCount');
 
-  // Display the timer
   timerDisplay.style.display = 'block';
   timerCount.innerText = timer;
   timerActive = true; // Set timerActive to true
