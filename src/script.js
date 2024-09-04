@@ -1,5 +1,7 @@
 // Reference to Firestore database
 const db = firebase.firestore();
+// Flag to track timer status
+let timerActive = false;
 
 // Function to generate a custom lesson ID
 function generateLessonID() {
@@ -72,6 +74,11 @@ submitButton.addEventListener('click', async function(event) {
 
 // Function to handle reaction click event
 function react(reactionType) {
+  if (timerActive) {
+    console.log('Cannot react while the timer is active.');
+    return; // Exit if the timer is active
+  }
+
   playAnimation(reactionType);
   // Get the lesson ID
   var lessonId = localStorage.getItem('pass_lesson');
@@ -126,6 +133,10 @@ function react(reactionType) {
 }
 
 function playAnimation(imageId) {
+  if (timerActive) {
+    return; // Exit if the timer is active
+  }
+  
   const image = document.getElementById(imageId);
   image.classList.add('img-click-animation');
   
@@ -146,13 +157,14 @@ function showPopupMessage(message) {
 
 // Timer function
 function startTimer() {
-  let timer = 10; // 10 seconds timer
+  let timer = 3; // 3 seconds timer
   const timerDisplay = document.getElementById('timerDisplay');
   const timerCount = document.getElementById('timerCount');
 
   // Display the timer
   timerDisplay.style.display = 'block';
   timerCount.innerText = timer;
+  timerActive = true; // Set timerActive to true
 
   const interval = setInterval(() => {
     timer--;
@@ -161,6 +173,7 @@ function startTimer() {
     if (timer <= 0) {
       clearInterval(interval);
       timerDisplay.style.display = 'none';
+      timerActive = false; // Set timerActive to false
     }
   }, 1000);
 }
