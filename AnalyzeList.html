@@ -10,7 +10,7 @@
 </head>
 <body>
   <!-- Image and text -->
-<nav class="navbar  fixed-top navbar-dark">
+<nav class="navbar  fixed-top navbar-light bg-light">
   <a class="navbar-brand" href="index.html">
     <img src="src/img/sisumaga.png" width="30" height="30" class="d-inline-block align-top" alt="">
     
@@ -42,7 +42,7 @@
       </div>
       <div class="col-md-4">
         <label for="datePicker" class="form-label">Date:</label>
-        <input type="date" id="datePicker" class="form-control" placeholder="Select date...">
+        <input type="date" id="datePicker" class="form-control" placeholder="Select Date...">
       </div>
     </div>
 
@@ -66,6 +66,7 @@
           <th scope="col">Grade</th>
           <th scope="col">Lesson</th>
           <th scope="col">Date</th>
+          <th scope="col">Total Reactions</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -136,7 +137,7 @@
 
     
     // Function to fetch reactions data from Firestore based on lesson_id and display it
-async function displayReactions() {
+    async function displayReactions() {
   const reactionsList = document.getElementById('reactions-list');
   reactionsList.innerHTML = ''; // Clear previous data
 
@@ -150,6 +151,11 @@ async function displayReactions() {
       const reactionsSnapshot = await db.collection('reactions').where('lesson_id', '==', lessonData.lesson_id).get();
       const reactionsData = reactionsSnapshot.docs.map(doc => doc.data())[0]; // Assuming only one reaction per lesson
 
+      const excellents = reactionsData ? reactionsData.excelents || 0 : 0;
+      const oks = reactionsData ? reactionsData.oks || 0 : 0;
+      const poors = reactionsData ? reactionsData.poors || 0 : 0;
+      const totalReactions = excellents + oks + poors;
+
       // Create a table row for the current lesson and reactions data
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -157,7 +163,8 @@ async function displayReactions() {
         <td>${lessonData.grade}</td>
         <td>${lessonData.lesson}</td>
         <td>${lessonData.timeStamp}</td>
-        <td><button class="btn btn-primary" onclick="showPercentagePopup(${reactionsData.excelents || 0}, ${reactionsData.oks || 0}, ${reactionsData.poors || 0})">Show Percentages</button></td>
+        <td>${totalReactions}</td> <!-- Display total reactions -->
+        <td><button class="btn btn-primary" onclick="showPercentagePopup(${excellents}, ${oks}, ${poors})">Show Percentages</button></td>
       `;
       reactionsList.appendChild(row);
     }
